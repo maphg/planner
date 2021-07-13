@@ -14,7 +14,7 @@
   >
     <div class="px-3">
       <h1 class="md:hidden text-2xl fw-700 leading-none">
-        {{ array.ubicacion }}
+        {{ array.destino }}
       </h1>
     </div>
     <div class="px-3">

@@ -5,11 +5,12 @@
       <!-- SELECTOR DE SECCIONES SUPERIOR -->
       <div
         class="
-          flex
+          flex flex-wrap
           md:hidden
           flex-row
           items-center
-          justify-evenly
+          md:justify-evenly
+          justify-start
           w-full
           flex-none
           snapy
@@ -19,21 +20,13 @@
           enter-active-class="animate__animated animate__bounceIn"
           v-for="x in arraySeccionUsuario"
           :key="x"
+          @click="infoUsuario()"
         >
           <div
             v-if="usuario === false"
             @click="usuario = !usuario"
             role="button"
-            class="
-              w-10
-              h-10
-              rounded-lg
-              bg-cover bg-center
-              flex
-              items-center
-              justify-center
-              fw-500
-            "
+            class="bg-cover bg-center iconosec"
             :style="{
               'background-image': `url(${x.foto})`,
             }"
@@ -49,16 +42,7 @@
             v-if="x.toggle === false"
             @click="x.toggle = !x.toggle"
             role="button"
-            class="
-              w-10
-              h-10
-              rounded-lg
-              zia
-              flex
-              items-center
-              justify-center
-              fw-500
-            "
+            class="iconosec"
             :class="x.seccion.toLowerCase()"
           >
             <h1>{{ x.seccion }}</h1>
@@ -87,6 +71,7 @@
           enter-active-class="animate__animated animate__bounceIn"
           v-for="x in arraySeccionUsuario"
           :key="x"
+          @click="infoUsuario()"
         >
           <div
             v-if="usuario === false"
@@ -180,7 +165,6 @@ export default {
   components: { Columna, Widgetdestino, Widgetactivos, Usuariocol },
   setup() {
     const store = useStore();
-
     const usuario = ref(true);
 
     // INICIA ARRAY DE SECCIONES
@@ -197,6 +181,14 @@ export default {
         action: "planner",
       });
     });
+
+    const infoUsuario = () => {
+      store.dispatch("getUsuario", {
+        idDestino: localStorage.getItem("idDestino"),
+        idUsuario: localStorage.getItem("usuario"),
+        action: "usuario",
+      });
+    };
 
     // ARRAY PARA COLUMNA DE PENDIENTES DE USUARIO
     const arrayUsuario = computed(() => {
@@ -225,6 +217,7 @@ export default {
       arrayDestino,
       arrayUsuario,
       arraySeccionUsuario,
+      infoUsuario,
     };
   },
 };
@@ -398,5 +391,9 @@ export default {
   scroll-snap-align: center;
   overflow-y: hidden;
   overflow-x: hidden;
+}
+
+.iconosec {
+  @apply flex-none mr-2 md:mr-0 md:w-10 md:h-10 w-6 h-6 text-xs md:text-base md:mb-0 mb-2 rounded-lg flex items-center justify-center font-semibold;
 }
 </style>

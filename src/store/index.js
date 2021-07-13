@@ -43,13 +43,15 @@ export default createStore({
       try {
         const Swal = require("sweetalert2");
 
-        const res = await fetch(`../apis/planner.php`, {
+        const res = await fetch(`http://10.30.30.104/maphg-beta/apis/planner.php`, {
           method: "POST",
           body: JSON.stringify(array),
         });
         const data = await res.json();
+
         if (data.secciones) {
           commit("setSecciones", data.secciones);
+
         } else {
           Swal.fire(
             'AVISO',
@@ -65,7 +67,7 @@ export default createStore({
     // OBTIENE INFORMACIÓN DE USUARIO
     async getUsuario({ commit }, array) {
       try {
-        const res = await fetch(`../apis/planner.php`, {
+        const res = await fetch(`http://10.30.30.104/maphg-beta/apis/planner.php`, {
           method: "POST",
           body: JSON.stringify(array),
         });

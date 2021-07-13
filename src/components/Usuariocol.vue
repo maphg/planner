@@ -25,10 +25,7 @@
             leading-none
             bg-cover bg-center
           "
-          :style="{
-            'background-image':
-              'url(https://www.maphg.com/america/planner/avatars/AVATAR_ID_0_0.svg)',
-          }"
+          :style="{ 'background-image': `url(${info.foto}` }"
         ></div>
         <div
           class="
@@ -49,6 +46,7 @@
         </div>
       </div>
       <!-- icono -->
+
       <!-- Botones -->
       <div class="flex-row justify-end items-center flex">
         <div
@@ -70,6 +68,7 @@
             <path d="M19 12H6M12 5l-7 7 7 7" />
           </svg>
         </div>
+
         <div
           v-if="tabshow === '1'"
           class="boton"
@@ -91,6 +90,7 @@
             ></path>
           </svg>
         </div>
+
         <div class="boton" @click="$emit('accion')">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -109,6 +109,7 @@
       </div>
       <!-- Botones -->
     </div>
+
     <!-- Subsecciones -->
     <transition enter-active-class="animate__animated animate__slideInRight">
       <div v-if="tabshow === '1'" class="pestaña">
@@ -118,11 +119,11 @@
             <h1 class="fw-400">Incidencias</h1>
           </div>
           <div class="principal">
-            <h1 v-if="info.seguimiento !== '0'">{{ info.seguimiento }}</h1>
-            <h1 v-if="info.alerta !== '0'">{{ info.alerta }}</h1>
-            <h1 v-if="info.alarma !== '0'">{{ info.alarma }}</h1>
-            <h1 v-if="info.urgencia !== '0'">{{ info.urgencia }}</h1>
-            <h1 v-if="info.emergencia !== '0'">{{ info.emergencia }}</h1>
+            <h1 v-if="info.seguimiento > 0">{{ info.seguimiento }}</h1>
+            <h1 v-if="info.alerta > 0">{{ info.alerta }}</h1>
+            <h1 v-if="info.alarma > 0">{{ info.alarma }}</h1>
+            <h1 v-if="info.urgencia > 0">{{ info.urgencia }}</h1>
+            <h1 v-if="info.emergencia > 0">{{ info.emergencia }}</h1>
           </div>
         </div>
 
@@ -143,7 +144,7 @@
                 bg-indigo-200
                 text-indigo-500
               "
-              v-if="info.totalPreventivos !== '0'"
+              v-if="info.totalPreventivos > 0"
             >
               {{ info.totalPreventivos }}
             </h1>
@@ -167,14 +168,14 @@
                 bg-indigo-200
                 text-indigo-500
               "
-              v-if="info.totalTareasproyectos !== '0'"
+              v-if="info.totalTareasproyectos > 0"
             >
               {{ info.totalTareasproyectos }}
             </h1>
           </div>
         </div>
 
-        <div class="subseccion" @click="tabshow = '5'">
+        <div class="subseccion" @click="tabshow = 'todo'">
           <div class="flex flex-row justify-start items-center">
             <div class="dot"></div>
             <h1 class="fw-400">
@@ -193,14 +194,14 @@
                 bg-indigo-200
                 text-indigo-500
               "
-              v-if="info.totalTodos !== '0'"
+              v-if="info.totalTodos > 0"
             >
               {{ info.totalTodos }}
             </h1>
           </div>
         </div>
 
-        <div class="subseccion" @click="tabshow = '6'">
+        <div class="subseccion" @click="tabshow = 'favoritos'">
           <div class="flex flex-row justify-start items-center">
             <div class="dot"></div>
             <h1 class="fw-400">Favoritos</h1>
@@ -217,7 +218,7 @@
                 bg-indigo-200
                 text-indigo-500
               "
-              v-if="info.totalFavoritos !== '0'"
+              v-if="info.totalFavoritos > 0"
             >
               {{ info.totalFavoritos }}
             </h1>
@@ -344,6 +345,7 @@
             >
               <h1>En proceso</h1>
             </div>
+
             <div
               class="pestaña2"
               :class="{ pestaña2activa: pestaña2 === 'sinprogramar' }"
@@ -351,7 +353,8 @@
             >
               <h1>Sin programar</h1>
             </div>
-            <div
+
+            <!-- <div
               class="pestaña2"
               :class="{ pestaña2activa: pestaña2 === 'estasemana' }"
               @click="pestaña2 = 'estasemana'"
@@ -364,7 +367,7 @@
               @click="pestaña2 = 'proximos'"
             >
               <h1>Proximos</h1>
-            </div>
+            </div> -->
           </div>
 
           <transition
@@ -523,6 +526,32 @@
       </div>
     </transition>
     <!-- TAREAS DE PROYECTOS -->
+
+    <!-- TO DO -->
+    <transition enter-active-class="animate__animated animate__slideInRight">
+      <div v-if="tabshow === 'todo'" class="pestaña">
+        <div class="flex flex-col items-center justify-center w-full pt-1">
+          <!-- FILAS INCIDENCIAS -->
+          <div>
+            <h1>TO DO</h1>
+          </div>
+        </div>
+      </div>
+    </transition>
+    <!-- TO DO -->
+
+    <!-- FAVORITOS -->
+    <transition enter-active-class="animate__animated animate__slideInRight">
+      <div v-if="tabshow === 'favoritos'" class="pestaña">
+        <div class="flex flex-col items-center justify-center w-full pt-1">
+          <!-- FILAS INCIDENCIAS -->
+          <div>
+            <h1>Favoritos</h1>
+          </div>
+        </div>
+      </div>
+    </transition>
+    <!-- FAVORITOS -->
   </div>
 </template>
 
@@ -554,7 +583,7 @@ div {
 }
 
 .columnaplanner {
-  @apply bg-white mr-4  w-96 md:w-80 rounded-xl self-start pb-3 text-left relative shadow-md;
+  @apply bg-white mr-4 md:mr-4 w-72 md:w-80 rounded-xl self-start pb-3 text-left relative shadow-md;
   scroll-snap-align: center;
   flex: none;
   max-height: 100%;

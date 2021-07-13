@@ -83,11 +83,11 @@
             <h1 class="fw-400">{{ sub.subseccion }}</h1>
           </div>
           <div class="principal">
-            <h1 v-if="sub.seguimiento !== '0'">{{ sub.seguimiento }}</h1>
-            <h1 v-if="sub.alerta !== '0'">{{ sub.alerta }}</h1>
-            <h1 v-if="sub.alarma !== '0'">{{ sub.alarma }}</h1>
-            <h1 v-if="sub.urgencia !== '0'">{{ sub.urgencia }}</h1>
-            <h1 v-if="sub.emergencia !== '0'">{{ sub.emergencia }}</h1>
+            <h1 v-if="sub.seguimiento > 0">{{ sub.seguimiento }}</h1>
+            <h1 v-if="sub.alerta > 0">{{ sub.alerta }}</h1>
+            <h1 v-if="sub.alarma > 0">{{ sub.alarma }}</h1>
+            <h1 v-if="sub.urgencia > 0">{{ sub.urgencia }}</h1>
+            <h1 v-if="sub.emergencia > 0">{{ sub.emergencia }}</h1>
           </div>
         </div>
         <div class="subseccion">
@@ -119,11 +119,11 @@
             <h1>{{ team.usuario }}</h1>
           </div>
           <div class="principal">
-            <h1 v-if="team.seguimiento !== '0'">{{ team.seguimiento }}</h1>
-            <h1 v-if="team.alerta !== '0'">{{ team.alerta }}</h1>
-            <h1 v-if="team.alarma !== '0'">{{ team.alarma }}</h1>
-            <h1 v-if="team.urgencia !== '0'">{{ team.urgencia }}</h1>
-            <h1 v-if="team.emergencia !== '0'">{{ team.emergencia }}</h1>
+            <h1 v-if="team.seguimiento > 0">{{ team.seguimiento }}</h1>
+            <h1 v-if="team.alerta > 0">{{ team.alerta }}</h1>
+            <h1 v-if="team.alarma > 0">{{ team.alarma }}</h1>
+            <h1 v-if="team.urgencia > 0">{{ team.urgencia }}</h1>
+            <h1 v-if="team.emergencia > 0">{{ team.emergencia }}</h1>
           </div>
         </div>
       </div>
@@ -133,14 +133,15 @@
 </template>
 
 <script>
-import { ref } from "@vue/reactivity";
+import { ref, computed } from "@vue/reactivity";
+
 import Notificaciones from "./Notificaciones.vue";
 import Iconocol from "./Iconocol.vue";
 export default {
   components: { Notificaciones, Iconocol },
   props: { array: { type: Object } },
 
-  setup() {
+  setup(props) {
     const tabshow = ref("1");
 
     return { tabshow };
@@ -155,12 +156,12 @@ div {
 }
 
 .columnaplanner {
-  @apply bg-white mr-4  w-96 md:w-80 rounded-xl self-start pb-3 text-left relative shadow-md;
-  scroll-snap-align: center;
-  flex: none;
-  max-height: 100%;
-  overflow-y: scroll;
-  overflow-x: hidden;
+   @apply bg-white mr-4 md:mr-4 w-72 md:w-80 rounded-xl self-start pb-3 text-left relative shadow-md;
+   scroll-snap-align: center;
+   flex: none;
+   max-height: 100%;
+   overflow-y: scroll;
+   overflow-x: hidden;
 }
 .columnaplanner::-webkit-scrollbar {
   /* WebKit */

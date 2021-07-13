@@ -1,4 +1,4 @@
-# 2021
+# MAPHG
 
 ## Project setup
 ```
