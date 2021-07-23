@@ -144,6 +144,28 @@ export default {
   setup(props) {
     const tabshow = ref("1");
 
+    // ORDENA USUARIOS SEGÚN PENDIENTES
+    if (props.array.usuariosSeccion) {
+      props.array.usuariosSeccion.sort((a, b) => {
+        const ax = a.totalIncidencias;
+        const bx = b.totalIncidencias;
+
+        if (ax < bx) return 1;
+        if (ax > bx) return -1;
+      });
+    }
+
+    // ORDENA SUBSECCIONES SEGÚN PENDIENTES
+    if (props.array.subsecciones) {
+      props.array.subsecciones.sort((a, b) => {
+        const ax = a.incidenciasSubseccion;
+        const bx = b.incidenciasSubseccion;
+
+        if (ax < bx) return 1;
+        if (ax > bx) return -1;
+      });
+    }
+
     return { tabshow };
   },
 };
@@ -156,12 +178,12 @@ div {
 }
 
 .columnaplanner {
-   @apply bg-white mr-4 md:mr-4 w-72 md:w-80 rounded-xl self-start pb-3 text-left relative shadow-md;
-   scroll-snap-align: center;
-   flex: none;
-   max-height: 100%;
-   overflow-y: scroll;
-   overflow-x: hidden;
+  @apply bg-white mr-4 md:mr-4 w-72 md:w-80 rounded-xl self-start pb-3 text-left relative shadow-md;
+  scroll-snap-align: center;
+  flex: none;
+  max-height: 95%;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 .columnaplanner::-webkit-scrollbar {
   /* WebKit */

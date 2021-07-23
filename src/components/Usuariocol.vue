@@ -25,7 +25,7 @@
             leading-none
             bg-cover bg-center
           "
-          :style="{ 'background-image': `url(${info.foto}` }"
+          :style="{ 'background-image': `url(${array.foto}` }"
         ></div>
         <div
           class="
@@ -39,9 +39,9 @@
             items-start
           "
         >
-          <h1>{{ info.nombre }}</h1>
+          <h1>{{ array.nombreCompleto }}</h1>
           <h1 class="text-xxs leading-tight text-gray-400">
-            {{ info.cargo }}
+            {{ array.cargo }}
           </h1>
         </div>
       </div>
@@ -72,7 +72,8 @@
         <div
           v-if="tabshow === '1'"
           class="boton"
-          :class="{ 'bg-gris-30 text-bluedemon-400': tabshow === 'ajustes' }"
+          :class="{ 'bg-gris-30 text-bluedemon-400': tabshow === '1' }"
+          @click="tabshow = 'ajustes'"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -119,11 +120,11 @@
             <h1 class="fw-400">Incidencias</h1>
           </div>
           <div class="principal">
-            <h1 v-if="info.seguimiento > 0">{{ info.seguimiento }}</h1>
-            <h1 v-if="info.alerta > 0">{{ info.alerta }}</h1>
-            <h1 v-if="info.alarma > 0">{{ info.alarma }}</h1>
-            <h1 v-if="info.urgencia > 0">{{ info.urgencia }}</h1>
-            <h1 v-if="info.emergencia > 0">{{ info.emergencia }}</h1>
+            <h1 v-if="array.seguimiento > 0">{{ array.seguimiento }}</h1>
+            <h1 v-if="array.alerta > 0">{{ array.alerta }}</h1>
+            <h1 v-if="array.alarma > 0">{{ array.alarma }}</h1>
+            <h1 v-if="array.urgencia > 0">{{ array.urgencia }}</h1>
+            <h1 v-if="array.emergencia > 0">{{ array.emergencia }}</h1>
           </div>
         </div>
 
@@ -144,9 +145,9 @@
                 bg-indigo-200
                 text-indigo-500
               "
-              v-if="info.totalPreventivos > 0"
+              v-if="array.totalPreventivos > 0"
             >
-              {{ info.totalPreventivos }}
+              {{ array.totalPreventivos }}
             </h1>
           </div>
         </div>
@@ -168,9 +169,9 @@
                 bg-indigo-200
                 text-indigo-500
               "
-              v-if="info.totalTareasproyectos > 0"
+              v-if="array.totalTareasproyectos > 0"
             >
-              {{ info.totalTareasproyectos }}
+              {{ array.totalTareasproyectos }}
             </h1>
           </div>
         </div>
@@ -182,6 +183,7 @@
               To do <span class="font-bold text-xxs">(Personal)</span>
             </h1>
           </div>
+
           <div class="flex justify-end">
             <h1
               class="
@@ -194,9 +196,9 @@
                 bg-indigo-200
                 text-indigo-500
               "
-              v-if="info.totalTodos > 0"
+              v-if="array.totalTodos > 0"
             >
-              {{ info.totalTodos }}
+              {{ array.totalTodos }}
             </h1>
           </div>
         </div>
@@ -218,15 +220,195 @@
                 bg-indigo-200
                 text-indigo-500
               "
-              v-if="info.totalFavoritos > 0"
+              v-if="array.totalFavoritos > 0"
             >
-              {{ info.totalFavoritos }}
+              {{ array.totalFavoritos }}
             </h1>
           </div>
         </div>
       </div>
     </transition>
     <!-- Subsecciones -->
+
+    <!-- ajustes de usuario -->
+    <transition enter-active-class="animate__animated animate__slideInRight">
+      <div v-if="tabshow === 'ajustes'" class="pestaña">
+        <div class="flex flex-col items-center justify-center w-full pt-1">
+          <!-- FILAS INCIDENCIAS -->
+          <div
+            class="
+              italic
+              font-bold
+              flex
+              items-center
+              justify-center
+              text-sm
+              mb-4
+            "
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4 mr-2 text-blue-500"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M5.52 19c.64-2.2 1.84-3 3.22-3h6.52c1.38 0 2.58.8 3.22 3"
+              />
+              <circle cx="12" cy="10" r="3" />
+              <circle cx="12" cy="12" r="10" />
+            </svg>
+            <h1>Ajustes Personales</h1>
+          </div>
+          <div class="w-full flex flex-col items-center justify-start pb-2">
+            <div class="w-full mb-2 flex flex-col justify-center items-center">
+              <img
+                class="w-32 mx-auto rounded-full"
+                :src="array.foto"
+                alt="Avatar Usuario"
+              />
+              <button
+                class="
+                  w-full
+                  mt-2
+                  text-xs
+                  bg-yellow-200
+                  text-yellow-500
+                  p-2
+                  rounded-lg
+                  font-bold
+                  relative
+                "
+                :disabled="editarDatos"
+              >
+                <input
+                  id="file"
+                  type="file"
+                  @change="subirFotoUsuario()"
+                  class="absolute left-0 opacity-0"
+                  accept="image/*"
+                />
+                Subir Imagen!
+              </button>
+            </div>
+            <div class="w-full mb-2">
+              <h1 class="text-xs font-bold italic">Nombre</h1>
+              <input
+                type="text"
+                v-model="array.nombre"
+                class="
+                  bg-gris-30
+                  w-full
+                  px-2
+                  py-1
+                  rounded-lg
+                  text-sm
+                  outline-none
+                  focus:ring focus:ring-yellow-200
+                "
+                :disabled="editarDatos"
+              />
+            </div>
+            <div class="w-full mb-2">
+              <h1 class="text-xs font-bold italic">Apellido</h1>
+              <input
+                type="text"
+                v-model="array.apellido"
+                class="
+                  bg-gris-30
+                  w-full
+                  px-2
+                  py-1
+                  rounded-lg
+                  text-sm
+                  outline-none
+                  focus:ring focus:ring-yellow-200
+                "
+                :disabled="editarDatos"
+              />
+            </div>
+            <div class="w-full mb-2">
+              <h1 class="text-xs font-bold italic">Email</h1>
+              <input
+                type="email"
+                v-model="array.correo"
+                class="
+                  bg-gris-30
+                  w-full
+                  px-2
+                  py-1
+                  rounded-lg
+                  text-sm
+                  outline-none
+                  focus:ring focus:ring-yellow-200
+                "
+                :disabled="editarDatos"
+              />
+            </div>
+            <div class="w-full mb-2">
+              <h1 class="text-xs font-bold italic">Telefono</h1>
+              <input
+                type="tel"
+                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                v-model="array.telefono"
+                max-length="10"
+                class="
+                  bg-gris-30
+                  w-full
+                  px-2
+                  py-1
+                  rounded-lg
+                  text-sm
+                  outline-none
+                  focus:ring focus:ring-yellow-200
+                "
+                :disabled="editarDatos"
+              />
+            </div>
+            <div class="w-full mb-2">
+              <button
+                class="
+                  bg-yellow-200
+                  text-yellow-500 text-xs
+                  rounded-lg
+                  w-full
+                  p-2
+                  mt-2
+                  font-bold
+                "
+                v-if="editarDatos == true"
+                @click="editarDatos = !editarDatos"
+              >
+                Editar Datos
+              </button>
+
+              <button
+                class="
+                  text-green-400
+                  bg-green-200
+                  text-xs
+                  rounded-lg
+                  w-full
+                  p-2
+                  mt-2
+                  font-bold
+                "
+                v-if="editarDatos == false"
+                @click="actualizarUsuario(array)"
+              >
+                Guardar Cambios
+              </button>
+            </div>
+            <Telegram :array="array" />
+          </div>
+        </div>
+      </div>
+    </transition>
+    <!-- ajustes de usuario -->
 
     <!-- Incidencias -->
     <transition enter-active-class="animate__animated animate__slideInRight">
@@ -277,10 +459,10 @@
               v-if="pestaña2 === 'pendientes'"
               class="flex flex-col items-center justify-center w-full pt-1"
             >
-              <Incidenciafila
-                v-for="(x, y) in info.incidencias"
+              <Ficha
+                v-for="(x, y) in arrayIncidencias.pendientes"
                 :key="y"
-                :array="x.pendientes"
+                :array="x"
               />
             </div>
           </transition>
@@ -292,10 +474,10 @@
               v-if="pestaña2 === 'sinprogramar'"
               class="flex flex-col items-center justify-center w-full pt-1"
             >
-              <Incidenciafila
-                v-for="(x, y) in info.incidencias"
+              <Ficha
+                v-for="(x, y) in arrayIncidencias.sinprogramar"
                 :key="y"
-                :array="x.sinprogramar"
+                :array="x"
               />
             </div>
           </transition>
@@ -307,10 +489,10 @@
               v-if="pestaña2 === 'solucionadas'"
               class="flex flex-col items-center justify-center w-full pt-1"
             >
-              <Incidenciafila
-                v-for="(x, y) in info.incidencias"
+              <Ficha
+                v-for="(x, y) in arrayIncidencias.solucionadas"
                 :key="y"
-                :array="x.solucionadas"
+                :array="x"
               />
             </div>
           </transition>
@@ -353,21 +535,6 @@
             >
               <h1>Sin programar</h1>
             </div>
-
-            <!-- <div
-              class="pestaña2"
-              :class="{ pestaña2activa: pestaña2 === 'estasemana' }"
-              @click="pestaña2 = 'estasemana'"
-            >
-              <h1>Esta semana</h1>
-            </div>
-            <div
-              class="pestaña2"
-              :class="{ pestaña2activa: pestaña2 === 'proximos' }"
-              @click="pestaña2 = 'proximos'"
-            >
-              <h1>Proximos</h1>
-            </div> -->
           </div>
 
           <transition
@@ -377,10 +544,10 @@
               v-if="pestaña2 === 'pendientes'"
               class="flex flex-col items-center justify-center w-full pt-1"
             >
-              <Incidenciafila
-                v-for="(x, y) in info.preventivos"
+              <Ficha
+                v-for="(x, y) in arrayPreventivos.pendientes"
                 :key="y"
-                :array="x.pendientes"
+                :array="x"
               />
             </div>
           </transition>
@@ -392,40 +559,10 @@
               v-if="pestaña2 === 'sinprogramar'"
               class="flex flex-col items-center justify-center w-full pt-1"
             >
-              <Incidenciafila
-                v-for="(x, y) in info.preventivos"
+              <Ficha
+                v-for="(x, y) in arrayPreventivos.sinprogramar"
                 :key="y"
-                :array="x.sinprogramar"
-              />
-            </div>
-          </transition>
-
-          <transition
-            enter-active-class="animate__animated animate__slideInRight"
-          >
-            <div
-              v-if="pestaña2 === 'estasemana'"
-              class="flex flex-col items-center justify-center w-full pt-1"
-            >
-              <Incidenciafila
-                v-for="(x, y) in info.preventivos"
-                :key="y"
-                :array="x.estasemana"
-              />
-            </div>
-          </transition>
-
-          <transition
-            enter-active-class="animate__animated animate__slideInRight"
-          >
-            <div
-              v-if="pestaña2 === 'proximos'"
-              class="flex flex-col items-center justify-center w-full pt-1"
-            >
-              <Incidenciafila
-                v-for="(x, y) in info.preventivos"
-                :key="y"
-                :array="x.proximos"
+                :array="x"
               />
             </div>
           </transition>
@@ -485,10 +622,10 @@
               v-if="pestaña2 === 'pendientes'"
               class="flex flex-col items-center justify-center w-full pt-1"
             >
-              <Incidenciafila
-                v-for="(x, y) in info.tareasproyectos"
+              <Ficha
+                v-for="(x, y) in arrayProyectos.enproceso"
                 :key="y"
-                :array="x.enproceso"
+                :array="x"
               />
             </div>
           </transition>
@@ -500,10 +637,10 @@
               v-if="pestaña2 === 'sinprogramar'"
               class="flex flex-col items-center justify-center w-full pt-1"
             >
-              <Incidenciafila
-                v-for="(x, y) in info.tareasproyectos"
+              <Ficha
+                v-for="(x, y) in arrayProyectos.sinprogramar"
                 :key="y"
-                :array="x.sinprogramar"
+                :array="x"
               />
             </div>
           </transition>
@@ -516,7 +653,7 @@
               class="flex flex-col items-center justify-center w-full pt-1"
             >
               <Incidenciafila
-                v-for="(x, y) in info.tareasproyectos"
+                v-for="(x, y) in array.tareasproyectos"
                 :key="y"
                 :array="x.solucionadas"
               />
@@ -532,8 +669,94 @@
       <div v-if="tabshow === 'todo'" class="pestaña">
         <div class="flex flex-col items-center justify-center w-full pt-1">
           <!-- FILAS INCIDENCIAS -->
-          <div>
+          <div
+            class="
+              italic
+              font-bold
+              flex
+              items-center
+              justify-center
+              text-sm
+              mb-4
+            "
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4 mr-2 text-green-500"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
             <h1>TO DO</h1>
+          </div>
+
+          <div class="w-full flex items-center justify-between flex-row mb-2">
+            <input
+              type="text"
+              placeholder="Añadir Tarea"
+              class="
+                px-2
+                py-2
+                rounded-l
+                bg-gris-30
+                text-xs
+                uppercade
+                w-full
+                focus:outline-none
+              "
+              v-model="todo"
+            />
+            <button
+              class="
+                px-2
+                py-2
+                rounded-r
+                bg-bluedemon-200
+                text-bluedemon-500 text-xs
+                focus:outline-none
+              "
+              @click="agregarTodo()"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+          </div>
+
+          <div class="w-full flex flex-col items-center justify-start">
+            <h1
+              class="text-xs font-bold italic text-left text-gray-500"
+              v-if="arrayTodo.PENDIENTE.length"
+            >
+              Pendiente
+            </h1>
+
+            <Todo v-for="(x, y) in arrayTodo.PENDIENTE" :key="y" :array="x" />
+
+            <h1
+              class="text-xs font-bold italic text-left text-gray-500"
+              v-if="arrayTodo.SOLUCIONADO.length"
+            >
+              Solucionado
+            </h1>
+
+            <Todo v-for="(x, y) in arrayTodo.SOLUCIONADO" :key="y" :array="x" />
           </div>
         </div>
       </div>
@@ -542,12 +765,39 @@
 
     <!-- FAVORITOS -->
     <transition enter-active-class="animate__animated animate__slideInRight">
-      <div v-if="tabshow === 'favoritos'" class="pestaña">
-        <div class="flex flex-col items-center justify-center w-full pt-1">
-          <!-- FILAS INCIDENCIAS -->
-          <div>
-            <h1>Favoritos</h1>
-          </div>
+      <div v-if="tabshow === 'favoritos'" class="pestaña relative">
+        <div
+          class="
+            italic
+            font-bold
+            flex
+            items-center
+            justify-center
+            text-sm
+            pb-4
+            bg-white
+            w-80
+            fixed
+          "
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-4 h-4 mr-2 text-yellow-500"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polygon
+              points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+            ></polygon>
+          </svg>
+          <h1>Favoritos</h1>
+        </div>
+        <div class="flex flex-col items-center justify-center w-full pt-12">
+          <Ficha v-for="(x, y) in arrayFavoritos" :key="y" :array="x" />
         </div>
       </div>
     </transition>
@@ -556,22 +806,127 @@
 </template>
 
 <script>
-import { ref } from "@vue/reactivity";
+import { ref, computed } from "@vue/reactivity";
+import { useStore } from "vuex";
+
 import Notificaciones from "./Notificaciones.vue";
 import Iconocol from "./Iconocol.vue";
 import Incidenciafila from "./Incidenciafila.vue";
+import Todo from "./Todo.vue";
+import Telegram from "./Telegram.vue";
+import Ficha from "./Ficha.vue";
 export default {
-  components: { Notificaciones, Iconocol, Incidenciafila },
+  components: {
+    Notificaciones,
+    Iconocol,
+    Incidenciafila,
+    Todo,
+    Telegram,
+    Ficha,
+  },
   props: {
-    info: {
+    array: {
       type: Object,
       required: true,
     },
   },
   setup(props) {
+    const store = useStore();
+    const Swal = require("sweetalert2");
+
     const tabshow = ref("1");
     const pestaña2 = ref("pendientes");
-    return { tabshow, pestaña2 };
+    const editarDatos = ref(true);
+    const todo = ref("");
+
+    // ARRAY PARA TODO DE USUARIO
+    const arrayTodo = computed(() => {
+      return store.state.arrayTodo;
+    });
+
+    // ARRAY PARA TODO DE USUARIO
+    const arrayIncidencias = computed(() => {
+      return store.state.arrayIncidencias;
+    });
+
+    // ARRAY PARA TODO DE USUARIO
+    const arrayPreventivos = computed(() => {
+      return store.state.arrayPreventivos;
+    });
+
+    // ARRAY PARA TODO DE USUARIO
+    const arrayProyectos = computed(() => {
+      return store.state.arrayProyectos;
+    });
+
+    // ARRAY PARA TODO DE USUARIO
+    const arrayFavoritos = computed(() => {
+      return store.state.arrayFavoritos;
+    });
+
+    // AGREGA TAREA (TO DO)
+    const agregarTodo = () => {
+      if (todo.value.length) {
+        store.dispatch("getTodo", {
+          idDestino: localStorage.getItem("idDestino"),
+          idUsuario: localStorage.getItem("usuario"),
+          todo: todo.value,
+          action: "agregarTodo",
+        });
+        todo.value = "";
+      }
+    };
+
+    // ACTUALIZA DATOS DE USUARIO
+    const actualizarUsuario = (array) => {
+      store.dispatch("actualizarUsuario", {
+        idDestino: localStorage.getItem("idDestino"),
+        idUsuario: localStorage.getItem("usuario"),
+        idUsuario: array.idUsuario,
+        nombre: array.nombre,
+        apellido: array.apellido,
+        correo: array.correo,
+        telefono: array.telefono,
+        telegram: array.telegram,
+        action: "actualizarUsuario",
+      });
+    };
+
+    // SUBE FOTO DE USUARIO
+    const subirFotoUsuario = (x) => {
+      console.log(document.getElementById("file").files[0]);
+      const formData = new FormData();
+      const file = event.target.files[0];
+
+      formData.append("username", "abc123");
+      formData.append("avatar", event.target.files[0]);
+
+      if (
+        file.type === "image/jpeg" ||
+        file.type === "image/png" ||
+        file.type === "image/gif" ||
+        file.type === "image/jpg"
+      ) {
+        store.dispatch("subirFotoUsuario", { formData });
+      } else {
+        Swal.fire("AVISO", "Adjunto No Permitido", "question");
+      }
+    };
+
+    return {
+      tabshow,
+      pestaña2,
+      arrayTodo,
+      editarDatos,
+      agregarTodo,
+      actualizarUsuario,
+      todo,
+      subirFotoUsuario,
+      arrayIncidencias,
+      arrayPreventivos,
+      arrayProyectos,
+      arrayFavoritos,
+    };
   },
 };
 </script>
@@ -583,7 +938,7 @@ div {
 }
 
 .columnaplanner {
-  @apply bg-white mr-4 md:mr-4 w-72 md:w-80 rounded-xl self-start pb-3 text-left relative shadow-md;
+  @apply bg-white mr-4 md:mr-4 w-full md:w-80 rounded-xl self-start pb-3 text-left relative shadow-md;
   scroll-snap-align: center;
   flex: none;
   max-height: 100%;

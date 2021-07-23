@@ -12,6 +12,7 @@
       snapy
       mr-0
       md:mr-24
+      py-1
     "
   >
     <div class="flex flex-col items-center justify-center leading-none w-full">

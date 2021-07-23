@@ -50,8 +50,9 @@
         </transition>
       </div>
 
-      <widgetdestino :array="arrayDestino"></widgetdestino>
-      <widgetactivos :array="arrayDestino"></widgetactivos>
+      <widgetdestino :array="arrayDestino" />
+      <widgetactivos :array="arrayDestino" />
+      <widgetcalendario :array="arrayDestino" />
     </div>
 
     <!-- SELECTOR DE SECCIONES LATERAL -->
@@ -131,7 +132,7 @@
         <usuariocol
           @accion="usuario = false"
           v-if="usuario === true"
-          :info="arrayUsuario"
+          :array="arrayUsuario"
         ></usuariocol>
       </transition>
 
@@ -159,10 +160,17 @@ import Columna from "../components/Columna.vue";
 import Widgetdestino from "../components/Widgetdestino.vue";
 import Widgetactivos from "../components/Widgetactivos.vue";
 import Usuariocol from "../components/Usuariocol.vue";
+import Widgetcalendario from "../components/Widgetcalendario.vue";
 
 export default {
   name: "Home",
-  components: { Columna, Widgetdestino, Widgetactivos, Usuariocol },
+  components: {
+    Columna,
+    Widgetdestino,
+    Widgetactivos,
+    Usuariocol,
+    Widgetcalendario,
+  },
   setup() {
     const store = useStore();
     const usuario = ref(true);
@@ -246,7 +254,7 @@ export default {
 .contenedor-columnas {
   scroll-snap-type: x mandatory;
   overflow-x: scroll;
-  @apply w-full row-start-2 flex flex-row justify-start items-start overflow-x-auto md:px-4 px-60;
+  @apply w-full row-start-2 flex flex-row justify-start items-start overflow-x-auto md:px-4 px-2 pb-1;
 }
 
 .scrollx {
@@ -394,6 +402,7 @@ export default {
 }
 
 .iconosec {
-  @apply flex-none mr-2 md:mr-0 md:w-10 md:h-10 w-6 h-6 text-xs md:text-base md:mb-0 mb-2 rounded-lg flex items-center justify-center font-semibold;
+  @apply flex-none mr-2 md:mr-0 md:w-10 md:h-10 w-6 h-6 md:text-base md:mb-0 mb-2 rounded-lg flex items-center justify-center font-semibold;
+  font-size: 0.55rem;
 }
 </style>

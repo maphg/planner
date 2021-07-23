@@ -19,7 +19,7 @@
         fw-500
         self-center
         flex flex-row flex-wrap
-        text-sm
+        text-xs
         px-2
         leading-tight
         justify-start
